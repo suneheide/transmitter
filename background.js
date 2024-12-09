@@ -75,7 +75,7 @@ function addUrl (torrentUrl, downloadDir) {
 ////// magnet: Handler
 
 function handleUrl (requestDetails) {
-	return addUrl(decodeURIComponent(requestDetails.url.replace('http://transmitter.web-extension/', '')))
+	return addUrl(decodeURIComponent(requestDetails.url.replace('http://transmitter2.web-extension/', '')))
 		.then(x => {
 			return browser.storage.local.get('server').then(({server}) => {
 				return { redirectUrl: server.base_url + 'web/' }
@@ -84,7 +84,7 @@ function handleUrl (requestDetails) {
 }
 
 browser.webRequest.onBeforeRequest.addListener(
-	handleUrl, { urls: ['http://transmitter.web-extension/*'] }, ['blocking']
+	handleUrl, { urls: ['http://transmitter2.web-extension/*'] }, ['blocking']
 )
 
 ////// Context menu
@@ -94,19 +94,19 @@ function createContextMenu () {
 		browser.contextMenus.removeAll()
 		if (!server || !server.locations || !server.locations.length) {
 			browser.contextMenus.create({
-				id: 'transmitter-add',
+				id: 'transmitter2-add',
 				title: 'Download with Transmission remote',
 				contexts: ['link']
 			})
 		} else {
 			browser.contextMenus.create({
-				id: 'transmitter-add',
+				id: 'transmitter2-add',
 				title: 'Download to Default location',
 				contexts: ['link']
 			})
 			server.locations.forEach(location => {
 				browser.contextMenus.create({
-					id: 'transmitter-add-loc-' + location.index,
+					id: 'transmitter2-add-loc-' + location.index,
 					title: 'Download to ' + location.name,
 					contexts: ['link']
 				})
@@ -118,10 +118,10 @@ function createContextMenu () {
 createContextMenu()
 
 browser.contextMenus.onClicked.addListener((info, tab) => {
-	if (info.menuItemId === 'transmitter-add') {
+	if (info.menuItemId === 'transmitter2-add') {
 		return addUrl(info.linkUrl)
-	} else if (info.menuItemId.startsWith('transmitter-add-loc-')) {
-		let index = parseInt(info.menuItemId.substr('transmitter-add-loc-'.length))
+	} else if (info.menuItemId.startsWith('transmitter2-add-loc-')) {
+		let index = parseInt(info.menuItemId.substr('transmitter2-add-loc-'.length))
 		browser.storage.local.get('server').then(({server}) => {
 			let path = server.locations[index].path
 			addUrl(info.linkUrl, path)
@@ -171,16 +171,16 @@ function updateBadge () {
 }
 
 browser.alarms.onAlarm.addListener(alarm => {
-	if (alarm.name === 'transmitter-badge-update') {
+	if (alarm.name === 'transmitter2-badge-update') {
 		return updateBadge()
 	}
 })
 
 function setupBadge () {
-	browser.alarms.clear('transmitter-badge-update').then(x => {
+	browser.alarms.clear('transmitter2-badge-update').then(x => {
 		browser.storage.local.get('server').then(({server}) => {
 			if (server && server.badge !== 'off') {
-				browser.alarms.create('transmitter-badge-update', {
+				browser.alarms.create('transmitter2-badge-update', {
 					periodInMinutes: parseInt(server.badge_interval || '1')
 				})
 			}
