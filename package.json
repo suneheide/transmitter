@@ -1,8 +1,8 @@
 {
-  "name": "transmitter",
+  "name": "transmitter2",
   "private": true,
   "version": "0.0.0",
-  "description": "build stuff for transmitter",
+  "description": "build stuff for transmitter2",
   "author": "Val Packett",
   "license": "Unlicense",
   "scripts": {
