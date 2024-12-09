@@ -22,7 +22,7 @@ const fxzip = new JSZip()
 addCode(fxzip)
 fxzip.file('manifest.json', fs.readFileSync('manifest.json'))
 fxzip.generateNodeStream({type: 'nodebuffer', streamFiles: true, compression: 'DEFLATE'})
-	.pipe(fs.createWriteStream('transmitter-firefox.zip'))
+	.pipe(fs.createWriteStream('transmitter2-firefox.zip'))
 
 const crzip = new JSZip()
 addCode(crzip)
@@ -40,4 +40,4 @@ crmanifest.icons = crmanifest.browser_action.default_icon = {
 }
 crzip.file('manifest.json', JSON.stringify(crmanifest))
 crzip.generateNodeStream({type: 'nodebuffer', streamFiles: true, compression: 'DEFLATE'})
-	.pipe(fs.createWriteStream('transmitter-chropera.zip'))
+	.pipe(fs.createWriteStream('transmitter2-chropera.zip'))
